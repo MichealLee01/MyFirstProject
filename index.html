@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8">
+        <title>可视化用电平台</title>
+        <link rel="stylesheet" href="./source/css/style.css" />
+		<script type="text/javascript" src="./threejs/js/jquery-1.8.0.min.js"></script>
+        <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+	</head>
+	<body style="margin: 0px; overflow: hidden;">
+        <header>
+            可视化用电平台
+            <span id=localtime style=" font-size:14px; position: absolute; right: 30px; top:-20px; "></span>
+        </header>
+        <div id="tag" style="visibility:hidden" class="tag">
+            <div>
+                <div>
+                    <span style="color: #ccc;">设备名称：</span>
+                    <span id="metername">系统组房间电表01</span>
+                </div>
+                <div >
+                    <span style="color: #ccc;">设备余额：</span>
+                    <span style="color: #0bd82d;">666.66 元</span>
+                </div>
+                <div>
+                    <span style="color: #ccc;">设备状态：</span>
+                    <span id="meterstatus" style="color: green;">在线</span>
+                    <span style="margin-left: 30px;">
+                        <button id="meterchange" class="button">跳闸</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="webgl" style="display: flex; justify-content: center; align-items: center;">
+            <div style="position: absolute; justify-content: center;" id="progress-bar">  
+                <div id="progress-fill">0%</div>  
+            </div> 
+            <div class="con-left">
+                <div class="left-top">
+                    <div class="title">本月用电量</div>
+                    <img src="./source/images/bj-1.png" alt="" class="bj-1">
+                    <img src="./source/images/bj-2.png" alt="" class="bj-2">
+                    <img src="./source/images/bj-3.png" alt="" class="bj-3">
+                    <img src="./source/images/bj-4.png" alt="" class="bj-4">
+                    <div id="echarts_2" class="charts"></div>
+                </div>
+                <div class="left-center">
+                    <div class="title">用能占比</div>
+                    <img src="./source/images/bj-1.png" alt="" class="bj-1">
+                    <img src="./source/images/bj-2.png" alt="" class="bj-2">
+                    <img src="./source/images/bj-3.png" alt="" class="bj-3">
+                    <img src="./source/images/bj-4.png" alt="" class="bj-4">
+                    <div id="echarts_1" class="charts"></div>
+                </div>
+                <div class="left-bottom">
+                    <div class="title">切换模型显示</div>
+                    <img src="./source/images/bj-1.png" alt="" class="bj-1">
+                    <img src="./source/images/bj-2.png" alt="" class="bj-2">
+                    <img src="./source/images/bj-3.png" alt="" class="bj-3">
+                    <img src="./source/images/bj-4.png" alt="" class="bj-4">
+                    <div id="echarts_3" class="charts">
+                        <table class="dttable"bordercolor="#0d48e0" border="1">
+                            <tbody>
+                            <tr align="center" >
+                                <td style="height: 50px;">是否自动旋转模型</td>
+                                <td><label class="switch">
+                                    <input type="checkbox" id="myCheckbox" />
+                                    <span class="slider round"></span>
+                                  </label></td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 50px;">切换正视图</td>
+                                <td><img src="./source/images/正视图.png" id="front" class="viewimg"></td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 50px;">切换侧视图</td>
+                                <td><img src="./source/images/侧视图.png" id="side" class="viewimg"></td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 50px;">切换俯视图</td>
+                                <td><img src="./source/images/俯视图.png" id="down" class="viewimg"></td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 50px;">切换轴测图</td>
+                                <td><img src="./source/images/轴测图.png" id="zhou" class="viewimg"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="con-right">
+                <div class="right-top">
+                    <table>
+                        <tbody>
+                        <tr style="height: 40px;">
+                            <td style="width: 250px; text-align: left; font-weight: 600;padding-left: 15px;">设备列表</td>
+                            <td style="text-align: center; width: 100px;">
+                                <button id="back" class="b1 click_pop">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>    
+                    <img src="./source/images/bj-1.png" alt="" class="bj-1">
+                    <img src="./source/images/bj-2.png" alt="" class="bj-2">
+                    <img src="./source/images/bj-3.png" alt="" class="bj-3">
+                    <img src="./source/images/bj-4.png" alt="" class="bj-4">
+                    <div>
+                        <table class="panel-table"bordercolor="#0d48e0" border="1">
+                            <tbody>
+                            <tr align="center">
+                                <td style="color: #00fcff; font-size: 20px; font-weight: bolder; padding: 5px 0; height: 40px;">设备名称</td>
+                                <td style="color: #00fcff; font-size: 20px; font-weight: bolder; padding: 5px 0;">设备位置</td>
+                            </tr>
+                            <tr style="font-size: 16px;" align="center" >
+                                <td>系统组房间电表01</td>
+                                <td width="80" height="30">
+                                    <button id="meter01" class="b1 click_pop">定位</button>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 16px;" align="center" >
+                                <td>硬件组房间电表02</td>
+                                <td width="80" height="30">
+                                    <button id="meter02" class="b1 click_pop">定位</button>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 16px;" align="center" >
+                                <td>测试组房间电表03</td>
+                                <td width="80" height="30">
+                                    <button id="meter03" class="b1 click_pop">定位</button>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 16px;" align="center" >
+                                <td>经理办公室电表04</td>
+                                <td width="80" height="30">
+                                    <button id="meter04" class="b1 click_pop">定位</button>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 16px;" align="center" >
+                                <td>财务办公室电表05</td>
+                                <td width="80" height="30">
+                                    <button id="meter05" class="b1 click_pop">定位</button>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 16px;" align="center" >
+                                <td>总裁办公室电表06</td>
+                                <td width="80" height="30">
+                                    <button id="meter06" class="b1 click_pop">定位</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="right-center">
+                    <div class="title">电梯运行情况</div>
+                    <img src="./source/images/bj-1.png" alt="" class="bj-1">
+                    <img src="./source/images/bj-2.png" alt="" class="bj-2">
+                    <img src="./source/images/bj-3.png" alt="" class="bj-3">
+                    <img src="./source/images/bj-4.png" alt="" class="bj-4">
+                    <div>
+                        <table class="dttable"bordercolor="#0d48e0" border="0">
+                            <tbody>
+                            <tr align="center">
+                                <td style="color: #00fcff; font-size: 20px; font-weight: bolder; padding: 5px 0; height: 40px;">一号电梯</td>
+                                <td style="color: #00fcff; font-size: 20px; font-weight: bolder; padding: 5px 0;">二号电梯</td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 40px;"><button id="dt1-1" class="dtbutton">一层</button></td>
+                                <td>
+                                    <button id="dt2-1" class="dtbutton">一层</button>
+                                </td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 40px;"><button id="dt1-2" class="dtbutton">二层</button></td>
+                                <td>
+                                    <button id="dt2-2" class="dtbutton">二层</button>
+                                </td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 40px;"><button id="dt1-3" class="dtbutton">三层</button></td>
+                                <td>
+                                    <button id="dt2-3" class="dtbutton">三层</button>
+                                </td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 40px;"><button id="dt1-4" class="dtbutton">四层</button></td>
+                                <td>
+                                    <button id="dt2-4" class="dtbutton">四层</button>
+                                </td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 40px;"><button id="dt1-5" class="dtbutton">五层</button></td>
+                                <td>
+                                    <button id="dt2-5" class="dtbutton">五层</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="right-bottom">
+                    <div class="title">修改模型</div>
+                    <img src="./source/images/bj-1.png" alt="" class="bj-1">
+                    <img src="./source/images/bj-2.png" alt="" class="bj-2">
+                    <img src="./source/images/bj-3.png" alt="" class="bj-3">
+                    <img src="./source/images/bj-4.png" alt="" class="bj-4">
+                    <div>
+                        <table class="dttable"bordercolor="#0d48e0" border="0">
+                            <tbody>
+                            <tr align="center" >
+                                <td colspan="2" style="height: 50px;"><button id="sourceModel" class="modelbutton" >原始模型</button></td>
+                                <td colspan="2"><button id="lineModel" class="modelbutton" >线框模型</button></td>
+                            </tr>
+                            <tr align="center" >
+                                <td colspan="2" style="height: 50px;"><button id="hideWall" class="modelbutton" >隐藏外墙</button></td>
+                                <td colspan="2"><button id="showWall" class="modelbutton" >显示外墙</button>
+                                </td>
+                            </tr>
+                            <tr align="center" >
+                                <td colspan="2" style="height: 50px;"><button id="hideFloor" class="modelbutton" >隐藏楼板</button></td>
+                                <td colspan="2"><button id="showFloor" class="modelbutton" >显示楼板</button></td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 50px;"><button id="redbtn" class="colorbutton" style="background: red;"></button></td>
+                                <td><button id="orangebtn" class="colorbutton" style="background: orange"></button></td>
+                                <td><button id="yellowbtn" class="colorbutton" style="background: yellow"></button></td>
+                                <td><button id="greenbtn" class="colorbutton" style="background: green;"></button></td>
+                            </tr>
+                            <tr align="center" >
+                                <td style="height: 50px;"><button id="cyanbtn" class="colorbutton" style="background: cyan;"></button></td>
+                                <td><button id="bluebtn" class="colorbutton" style="background: blue;"></button></td>
+                                <td><button id="purplebtn" class="colorbutton" style="background: purple"></button></td>
+                                <td><button id="graybtn" class="colorbutton" style="background: gray;"></button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "./threejs/build/three.module.js",
+                    "three/addons/": "./threejs/"
+                }
+            }
+        </script>
+        <script src="./index.js" type="module"></script>
+        <script type="text/javascript" src="./threejs/js/times.js"></script>
+        <script type="text/javascript" src="./threejs/js/echarts.min.js"></script>
+        <script type="text/javascript" src="./threejs/js/echarts.js"></script>
+    </body>
+</html>
