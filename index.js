@@ -66,7 +66,8 @@ loader.load("./source/思创大厦.gltf",function(gltf){
 function (xhr) {  
     // 加载中，根据xhr.loaded和xhr.total计算进度  
     if (xhr.total) {  
-        let percentComplete = (xhr.loaded / xhr.total * 100).toFixed(2);  
+        let percentComplete = (Math.min(xhr.loaded / xhr.total, 1) * 100).toFixed(2);  
+        console.log(xhr.loaded, xhr.total);
         updateProgress(percentComplete);  
     }  
 });
