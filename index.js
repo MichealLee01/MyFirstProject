@@ -68,7 +68,9 @@ function (xhr) {
     if (xhr.total) {  
         let percentComplete = (Math.min(xhr.loaded / xhr.total, 1) * 100).toFixed(2);  
         console.log(xhr.loaded, xhr.total);
-        updateProgress(percentComplete);  
+        if(percentComplete<=100){
+            updateProgress(percentComplete);  
+        }
     }  
 });
 
